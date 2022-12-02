@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.6</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>simon.example</groupId>
+	<artifactId>freemarker-streaming-poc</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>FreeMarker Streaming Proof-of-Concept</name>
+	<description>
+		Proof of concept project proving that Spring MVC using FreeMarker
+		can incrementally send pieces of web pages as soon as they are ready.
+		This means that initially as we send static content whilst be wait for
+		dynamic content to be ready and then we send more content
+		before waiting for the next piece of dynamic content to be finished.
+		This is implemented by interleaving execution into the template, and optionally,
+		concurrency (Futures) can also be incorporated to reduce total page load time.
+		
+		Note: in HTTP 1.1, streaming is via chunked transfer-encoding.
+	</description>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
