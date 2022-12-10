@@ -24,7 +24,7 @@
 		Note: in HTTP 1.1, streaming is via chunked transfer-encoding.
 	</description>
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>9</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
