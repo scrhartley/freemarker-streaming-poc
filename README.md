@@ -98,7 +98,9 @@ The code in this project related to FreeMarker and its Spring integration is wri
 However, the project was switched to Java 9 in order to be able to use `CompletableFuture#failedFuture` 
 in the example service using Spring async. 
 
-### Easter egg
+### Easter eggs
 
-Plumb in `ExtraConcurrentFreeMarkerConfig` to get concurrency in templates without having to use async services 
-(alternatively, use an ExecutorService in your Controllers). 
+1. Plumb in `ExtraConcurrentFreeMarkerConfig` to get concurrency in templates without having to use async services 
+(alternatively, use an ExecutorService in your Controllers).  
+2. Look at `FakeFuturesController` for how to avoid both async services and using Callables directly.  
+This implementation uses a special non-concurrent ExecutorService to avoid having to manage a normal ExecutorService.
