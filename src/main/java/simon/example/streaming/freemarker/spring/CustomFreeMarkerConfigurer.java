@@ -5,7 +5,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 abstract class CustomFreeMarkerConfigurer extends FreeMarkerConfigurer {
 
-    private static final Version LATEST_VERSION = Configuration.VERSION_2_3_31;
+    private static final Version LATEST_VERSION = Configuration.VERSION_2_3_32;
 
     protected final boolean productionMode;
 
