@@ -122,17 +122,19 @@ public class FakeFuturesController {
 //                    lock.unlock();
 //                }
 //
-//                command.run();
-//
-//                lock.lock();
 //                try {
-//                    taskRunning = false;
-//                    if (shutdown) {
-//                        terminated = true;
-//                        condition.signalAll();
-//                    }
+//                    command.run();
 //                } finally {
-//                    lock.unlock();
+//                    lock.lock();
+//                    try {
+//                        taskRunning = false;
+//                        if (shutdown) {
+//                            terminated = true;
+//                            condition.signalAll();
+//                        }
+//                    } finally {
+//                        lock.unlock();
+//                    }
 //                }
 //            }
 //
