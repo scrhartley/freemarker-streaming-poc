@@ -96,7 +96,14 @@ See `EnhancedTemplateExceptionHandlers` for ways unhandled errors are dealt with
 
 The code in this project related to FreeMarker and its Spring integration is written to compile under JDK 8. 
 However, the project was switched to Java 9 in order to be able to use `CompletableFuture#failedFuture` 
-in the example service using Spring async. 
+in the example service using Spring async. If JDK 8 and failedFuture is required, you could use:
+```
+public static <T> CompletableFuture<T> failedFuture(Throwable ex) {
+    CompletableFuture<T> future = new CompletableFuture<>();
+    future.obtrudeException(ex);
+    return future;
+}
+```
 
 ### Easter eggs
 
