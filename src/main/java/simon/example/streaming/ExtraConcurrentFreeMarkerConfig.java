@@ -3,7 +3,7 @@ package simon.example.streaming;
 /**
  * This class exists to allow FreeMarker to automatically convert Callables in the Model to Futures.
  * This allows concurrency in the templates without having to write async services.
- * Note: if you've using caching with your Callables, make sure those cache implementation are thread-safe.
+ * Note: if you're using caching with your Callables, make sure those cache implementation are thread-safe.
  *
  * (Without any use of Futures, you still get the benefits of interleaved execution
  * and hence the ability to start sending HTML to the client before all data has been retrieved.)
