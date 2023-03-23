@@ -70,7 +70,7 @@ Atom is implemented as a custom Java directive.
 An alternative to FreeMarker's attempt/recover directives, providing a more declarative and flexible way
 to show fallback content for a part of the page when an error occurs.  
 Error boundary is implemented as a macro in the template.  
-Inspiration: https://reactjs.org/docs/error-boundaries.html  
+Inspiration: https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
 
 
 - `/suspense` ***Suspense directive***  
@@ -81,7 +81,7 @@ one loading indicator at a time and other pending data may complete at roughly t
 If you wish to use suspense and error boundary together then, unlike React,
 the error boundary should be inside the suspense and not the other way round.  
 Suspense is implemented as a macro in the template and uses the atom directive.  
-Inspiration https://reactjs.org/docs/react-api.html#reactsuspense  
+Inspiration: https://react.dev/reference/react/Suspense
 
 
 ## Notes

@@ -36,7 +36,7 @@
 
 
 
-<#-- Inspiration https://reactjs.org/docs/react-api.html#reactsuspense -->
+<#-- Inspiration https://react.dev/reference/react/Suspense -->
 <#macro suspense fallback={}>
     <#local counter = .globals.__suspenseIdCounter__!0>
     <#global __suspenseIdCounter__ = counter + 1>
