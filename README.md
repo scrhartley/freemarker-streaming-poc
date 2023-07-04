@@ -110,4 +110,9 @@ public static <T> CompletableFuture<T> failedFuture(Throwable ex) {
 1. Plumb in `ExtraConcurrentFreeMarkerConfig` to get concurrency in templates without having to use async services 
 (alternatively, use an ExecutorService in your Controllers).  
 2. Look at `FakeFuturesController` for how to avoid both async services and using Callables directly.  
-This implementation uses a special non-concurrent ExecutorService to avoid having to manage a normal ExecutorService.
+This implementation uses a special non-concurrent ExecutorService to avoid having to manage a normal ExecutorService. 
+
+### Troubleshooting
+
+HTTP streaming may not work if your servers are configured incorrectly. For notes on buffering and Nagle's algorithm see:
+https://medium.com/airbnb-engineering/improving-performance-with-http-streaming-ba9e72c66408  
