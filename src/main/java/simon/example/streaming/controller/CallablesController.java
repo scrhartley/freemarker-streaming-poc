@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import simon.example.streaming.service.BlockingSlowService;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 @Controller
 @RequestMapping("/callables")
@@ -33,11 +33,11 @@ public class CallablesController {
     @GetMapping("/dependencies")
     public String pageWithDependencies(Model model) {
 
-        Callable<String> data1 = caching(service::getData1);
+        Callable<String> data1 = resolvingOnce(service::getData1);
 
         model.addAttribute("myData", data1);
 
-        model.addAttribute("myData2", caching(() -> {
+        model.addAttribute("myData2", resolvingOnce(() -> {
             String data = data1.call();
             return service.getData2(data + " and sub-work is done");
         }));
@@ -47,35 +47,25 @@ public class CallablesController {
 
 
 
-    // Caching is a solution to help when both the template and the controller invoke the same callable.
+    // Helps when both the template and the controller invoke the same callable.
     // This implementation is thread-safe, which might not always be required.
-    private static <T> Callable<T> caching(Callable<T> callable) {
-        return new Callable<>() {
-            // At time of writing, preview Virtual Threads work best when avoiding synchronized keyword.
-            private final Lock lock = new ReentrantLock();
-            private Callable<T> resultCallable = callable;
+    private static <T> Callable<T> resolvingOnce(Callable<T> callable) {
+        return new Callable<T>() {
+            private final FutureTask<T> future = new FutureTask<>(callable);
             @Override
             public T call() throws Exception {
-                lock.lock();
+                future.run(); // Returns immediately if already running
                 try {
-                    try {
-                        T result = resultCallable.call();
-                        if (resultCallable == callable) {
-                            resultCallable = () -> result;
-                        }
-                        return result;
+                    return future.get();
+                } catch (ExecutionException e) {
+                    if (e.getCause() instanceof Exception) {
+                        throw (Exception) e.getCause();
                     }
-                    catch (Exception e) {
-                        if (resultCallable == callable) {
-                            resultCallable = () -> { throw e; };
-                        }
-                        throw e;
-                    }
-                } finally {
-                    lock.unlock();
+                    throw e;
                 }
             }
         };
     }
+
 
 }
