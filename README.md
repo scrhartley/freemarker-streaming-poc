@@ -112,7 +112,9 @@ public static <T> CompletableFuture<T> failedFuture(Throwable ex) {
 2. Look at `FakeFuturesController` for how to avoid both async services and using Callables directly.  
 This implementation uses a special non-concurrent ExecutorService to avoid having to manage a normal ExecutorService. 
 
-### Troubleshooting
+### Warnings and Troubleshooting
 
-HTTP streaming may not work if your servers are configured incorrectly. For notes on buffering and Nagle's algorithm see:
-https://medium.com/airbnb-engineering/improving-performance-with-http-streaming-ba9e72c66408  
+- HTTP streaming may not work if your servers are configured incorrectly. For notes on buffering and Nagle's algorithm see:
+  https://medium.com/airbnb-engineering/improving-performance-with-http-streaming-ba9e72c66408
+- Any increase of concurrency in your application may lead to increased demand for database connections.
+  Make sure that your connection pooling and database are tuned accordingly.
