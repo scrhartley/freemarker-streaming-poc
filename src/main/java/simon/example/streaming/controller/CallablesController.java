@@ -54,7 +54,7 @@ public class CallablesController {
             private final FutureTask<T> future = new FutureTask<>(callable);
             @Override
             public T call() throws Exception {
-                future.run(); // Returns immediately if already running
+                future.run(); // Returns immediately if already running or ran previously
                 try {
                     return future.get();
                 } catch (ExecutionException e) {
