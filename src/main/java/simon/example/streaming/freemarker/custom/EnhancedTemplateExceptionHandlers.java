@@ -61,9 +61,9 @@ public class EnhancedTemplateExceptionHandlers {
                     pw.write(outCapture.toString());
                     // Clear page so there's only the error message.
                     pw.write(
-                            "<script>const self = document.currentScript; setTimeout(() => {\n" +
+                            "<script>(() => { const self = document.currentScript; setTimeout(() => {\n" +
                                     "document.body.innerHTML = self.previousElementSibling.outerHTML;\n" +
-                                    "});</script>");
+                                "}); })();</script>");
                     //  Close the stream so that browser thinks it should render the debug HTML,
                     //  rather than just log the incomplete stream error in the console.
                     pw.close();
