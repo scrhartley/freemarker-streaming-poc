@@ -1,4 +1,4 @@
-package simon.example.streaming.service;
+package example.streaming.service;
 
 import org.springframework.stereotype.Service;
 

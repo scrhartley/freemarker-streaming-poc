@@ -1,17 +1,17 @@
-package simon.example.streaming.freemarker.spring;
+package example.streaming.freemarker.spring;
 
 import freemarker.core.Environment;
 import freemarker.template.*;
-import simon.example.streaming.freemarker.custom.DeferredInvocationTemplateException;
-import simon.example.streaming.freemarker.custom.FlushBoundaryDirective;
+import example.streaming.freemarker.custom.DeferredInvocationTemplateException;
+import example.streaming.freemarker.custom.FlushBoundaryDirective;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static simon.example.streaming.freemarker.custom.EnhancedTemplateExceptionHandlers.JS_ENHANCED_HTML_DEBUG_HANDLER;
-import static simon.example.streaming.freemarker.custom.EnhancedTemplateExceptionHandlers.newMetaRefreshEnhancedRethrowHandler;
+import static example.streaming.freemarker.custom.EnhancedTemplateExceptionHandlers.JS_ENHANCED_HTML_DEBUG_HANDLER;
+import static example.streaming.freemarker.custom.EnhancedTemplateExceptionHandlers.newMetaRefreshEnhancedRethrowHandler;
 
 public class InterleavedExecutionHtmlFreemarkerConfigurer extends CustomFreeMarkerConfigurer {
 

@@ -1,4 +1,4 @@
-package simon.example.streaming;
+package example.streaming;
 
 /**
  * This class exists to allow FreeMarker to automatically convert Callables in the Model to Futures.

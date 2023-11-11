@@ -1,11 +1,11 @@
-package simon.example.streaming.controller;
+package example.streaming.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import simon.example.streaming.service.BlockingSlowService;
+import example.streaming.service.BlockingSlowService;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;

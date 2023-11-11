@@ -1,11 +1,11 @@
-package simon.example.streaming;
+package example.streaming;
 
 import org.springframework.boot.autoconfigure.freemarker.FreeMarkerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-import simon.example.streaming.freemarker.spring.InterleavedExecutionHtmlFreemarkerConfigurer;
+import example.streaming.freemarker.spring.InterleavedExecutionHtmlFreemarkerConfigurer;
 
 import java.util.Properties;
 

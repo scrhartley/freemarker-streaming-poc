@@ -1,4 +1,4 @@
-package simon.example.streaming.freemarker.custom;
+package example.streaming.freemarker.custom;
 
 import freemarker.core.Environment;
 import freemarker.template.*;

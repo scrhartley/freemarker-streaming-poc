@@ -1,4 +1,4 @@
-package simon.example.streaming.controller;
+package example.streaming.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

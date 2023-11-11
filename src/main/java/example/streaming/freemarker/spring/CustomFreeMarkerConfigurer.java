@@ -1,4 +1,4 @@
-package simon.example.streaming.freemarker.spring;
+package example.streaming.freemarker.spring;
 
 import freemarker.template.*;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
