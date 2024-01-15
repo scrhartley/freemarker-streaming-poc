@@ -19,8 +19,16 @@ public class EnhancedTemplateExceptionHandlers {
 
     // For production use
     // Note: Error path should prevent caching to avoid being cached as the content of the requested page.
-    public static TemplateExceptionHandler newMetaRefreshEnhancedRethrowHandler(String errorPath) {
-        return (TemplateException te, Environment env, Writer out) -> {
+    public static class MetaRefreshEnhancedRethrowHandler implements TemplateExceptionHandler {
+        private final String errorPath;
+
+        public MetaRefreshEnhancedRethrowHandler(String errorPath) {
+            this.errorPath = errorPath;
+        }
+
+        @Override
+        public void handleTemplateException(
+                TemplateException te, Environment env, Writer out) throws TemplateException {
             if (out instanceof ExceptionAwareWriter) {
                 out = ((ExceptionAwareWriter) out).getExceptionWriter();
             }
@@ -34,8 +42,9 @@ public class EnhancedTemplateExceptionHandlers {
                 pw.close();
             }
             TemplateExceptionHandler.RETHROW_HANDLER.handleTemplateException(te, env, out);
-        };
+        }
     }
+
 
     // For development use
     public static final TemplateExceptionHandler JS_ENHANCED_HTML_DEBUG_HANDLER = new TemplateExceptionHandler() {
