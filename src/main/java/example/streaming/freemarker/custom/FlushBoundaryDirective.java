@@ -8,7 +8,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
-// Equivalent to the following, except that exceptions will still work if
+// Equivalent to the following, except that exceptions will still work provided that
 // the TemplateExceptionHandler used knows about ExceptionAwareWriter:
 //    <#macro flusher>
 //        <#flush>
