@@ -1,6 +1,7 @@
 # FreeMarker Streaming Proof-of-Concept
 
-Proof-of-concept for HTML streaming in [Spring](https://spring.io/projects/spring-boot) implemented with the [FreeMarker](https://freemarker.apache.org/) template language.  
+Proof-of-concept for HTML streaming in [Spring](https://spring.io/projects/spring-boot) implemented with the
+[FreeMarker](https://freemarker.apache.org/) template language.  
 
 The problem with normal MVC is that when a user visits a web page,
 nothing happens until all the data has been collected and the server responds with the HTML page. 
@@ -73,14 +74,16 @@ Error boundary is implemented as a macro in the template.
 Inspiration: https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
 
 
-- `/suspense` ***Suspense directive***  
+- `/suspend` ***Suspend directive***  
 Builds upon atom to show a loading indicator until its content is complete.
 If JavaScript is not available, then the loading indicator/fallback will not be shown. 
-Perhaps this directive is less useful when using concurrency, since it can only show 
-one loading indicator at a time and other pending data may complete at roughly the same time.  
-If you wish to use suspense and error boundary together then, unlike React,
-the error boundary should be inside the suspense and not the other way round.  
-Suspense is implemented as a macro in the template and uses the atom directive.  
+Perhaps this directive is less useful when using concurrency, since it can only show one
+loading indicator at a time and other pending data may complete at roughly the same time.
+For this reason it is not called suspense and a proper out-of-order version
+seems like it would require changes to FreeMarker itself.  
+If you wish to use suspend and error boundary together then, unlike React,
+the error boundary should be inside the suspend and not the other way round.  
+Suspend is implemented as a macro in the template and uses the atom directive.  
 Inspiration: https://react.dev/reference/react/Suspense
 
 

@@ -6,16 +6,16 @@
 	<body>
 
 	    <ul>
-            <li> <div>My page using suspense macro with callables!</div> </li>
+            <li> <div>My page using suspend macro with callables!</div> </li>
 
             <li>
-                <@suspense> <div>${myData1}</div> </@suspense>
+                <@suspend> <div>${myData1}</div> </@suspend>
             </li>
             <li>
-                <@suspense fallback=myLoadingMacro> <div>${myData2}</div> </@suspense>
+                <@suspend fallback=myLoadingMacro> <div>${myData2}</div> </@suspend>
             </li>
             <li>
-                <@suspense fallback="Loading (with HTML string fallback) ..."> <div>${myData3}</div> </@suspense>
+                <@suspend fallback="Loading (with HTML string fallback) ..."> <div>${myData3}</div> </@suspend>
             </li>
         </ul>
 
@@ -30,17 +30,17 @@
     Loading (with macro fallback) ...
 </#macro>
 
-<#macro sharedSuspenseFallback>
+<#macro sharedSuspendFallback>
     Loading (with default fallback) ...
 </#macro>
 
 
 
 <#-- Inspiration https://react.dev/reference/react/Suspense -->
-<#macro suspense fallback={}>
-    <#local counter = .globals.__suspenseIdCounter__!0>
-    <#global __suspenseIdCounter__ = counter + 1>
-    <#local id = "FMS_fallback:" + .globals.__suspenseIdCounter__?c>
+<#macro suspend fallback={}>
+    <#local counter = .globals.__suspendIdCounter__!0>
+    <#global __suspendIdCounter__ = counter + 1>
+    <#local id = "FMS_fallback:" + .globals.__suspendIdCounter__?c>
 
     <#if fallback?is_macro>
         <template id="${id}"><@fallback /></template>
@@ -49,7 +49,7 @@
     <#elseif fallback?is_markup_output>
         <template id="${id}">${fallback}</template>
     <#else>
-        <template id="${id}"><@sharedSuspenseFallback /></template>
+        <template id="${id}"><@sharedSuspendFallback /></template>
     </#if>
     <#-- Show fallback using JS so won't show if no JS. -->
     <script>(t => t.after(t.content))(document.getElementById("${id}"));</script>
