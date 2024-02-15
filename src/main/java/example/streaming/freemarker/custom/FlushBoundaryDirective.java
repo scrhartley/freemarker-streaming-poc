@@ -8,14 +8,14 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
-// Equivalent to the following, except that exceptions will still work provided that
-// the TemplateExceptionHandler used knows about ExceptionAwareWriter:
+// Equivalent to the following, except that exceptions will still work provided
+// that the TemplateExceptionHandler used knows about ExceptionAwareWriter:
 //    <#macro flusher>
 //        <#flush>
 //        <#local nestedContent><#nested></#local> <#-- Swallows flushes -->
 //        ${nestedContent}
 //    </#macro>
-// This is useful if you're unhappy with the auto-flushing that the nested body is doing.
+// This is useful if you're unhappy with auto-flushing that the nested body is doing.
 public class FlushBoundaryDirective implements TemplateDirectiveModel {
 
     @Override
