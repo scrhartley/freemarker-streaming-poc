@@ -110,10 +110,11 @@ public static <T> CompletableFuture<T> failedFuture(Throwable ex) {
 
 ### Easter eggs
 
-1. Plumb in `ExtraConcurrentFreeMarkerConfig` to get concurrency in templates without having to use async services 
-(alternatively, use an ExecutorService in your Controllers).  
-2. Look at `FakeFuturesController` for how to avoid both async services and using Callables directly.  
-This implementation uses a special non-concurrent ExecutorService to avoid having to manage a normal ExecutorService. 
+1. Look at `FakeFuturesController` for how to get interleaved execution while avoiding both async services and
+using Callables directly. This implementation uses a special non-concurrent ExecutorService to avoid having to
+manage a normal ExecutorService.  
+2. Plumb in `ExtraConcurrentFreeMarkerConfig` which automatically converts Callables to Futures in order to get
+concurrency in templates without using async services (alternatively, use an ExecutorService in your Controllers).  
 
 ### Warnings and Troubleshooting
 
