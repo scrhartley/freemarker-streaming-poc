@@ -86,9 +86,8 @@ public class FakeFuturesController {
 //        // Using this ExecutorService allows deferring execution of a task without introducing concurrency.
 //        private static class LazyDirectExecutorService extends AbstractExecutorService {
 //
-//            private volatile boolean shutdown;
-//            private volatile boolean taskRunning;
-//            private volatile boolean terminated;
+//            private boolean shutdown;
+//            private int runningTasks;
 //            private final ReentrantLock lock = new ReentrantLock();
 //            private final Condition condition = lock.newCondition();
 //
@@ -117,7 +116,7 @@ public class FakeFuturesController {
 //                    if (shutdown) {
 //                        throw new RejectedExecutionException();
 //                    }
-//                    taskRunning = true;
+//                    runningTasks++;
 //                } finally {
 //                    lock.unlock();
 //                }
@@ -127,9 +126,8 @@ public class FakeFuturesController {
 //                } finally {
 //                    lock.lock();
 //                    try {
-//                        taskRunning = false;
-//                        if (shutdown) {
-//                            terminated = true;
+//                        int numRunning = --runningTasks;
+//                        if (numRunning == 0) {
 //                            condition.signalAll();
 //                        }
 //                    } finally {
@@ -141,11 +139,12 @@ public class FakeFuturesController {
 //
 //            @Override
 //            public void shutdown() {
-//                shutdown = true;
-//
 //                lock.lock();
 //                try {
-//                    terminated = !taskRunning;
+//                    shutdown = true;
+//                    if (runningTasks == 0) {
+//                        condition.signalAll();
+//                    }
 //                } finally {
 //                    lock.unlock();
 //                }
@@ -159,23 +158,38 @@ public class FakeFuturesController {
 //
 //            @Override
 //            public boolean isShutdown() {
-//                return shutdown;
+//                lock.lock();
+//                try {
+//                    return shutdown;
+//                } finally {
+//                    lock.unlock();
+//                }
 //            }
 //
 //            @Override
 //            public boolean isTerminated() {
-//                return terminated;
+//                lock.lock();
+//                try {
+//                    return shutdown && runningTasks == 0;
+//                } finally {
+//                    lock.unlock();
+//                }
 //            }
 //
 //            @Override
 //            public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+//                long nanos = unit.toNanos(timeout);
 //                lock.lock();
 //                try {
-//                    if (terminated) {
-//                        return true;
+//                    while (true) {
+//                        if (shutdown && runningTasks == 0) {
+//                            return true;
+//                        } else if (nanos <= 0L) {
+//                            return false;
+//                        } else {
+//                            nanos = condition.awaitNanos(nanos);
+//                        }
 //                    }
-//                    condition.await(timeout, unit);
-//                    return terminated;
 //                } finally {
 //                    lock.unlock();
 //                }
