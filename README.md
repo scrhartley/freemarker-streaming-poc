@@ -93,7 +93,7 @@ Inspiration: https://react.dev/reference/react/Suspense
 
 Since potential exceptions are deferred, error handling is different from traditional MVC pages.  
 This provides an opportunity to more easily have parts of the page fail independently (e.g. using error boundaries).  
-See `EnhancedTemplateExceptionHandlers` for ways unhandled errors are dealt with, closer to traditional MVC. 
+See `HtmlStreamTemplateExceptionHandlers` for ways unhandled errors are dealt with, closer to traditional MVC. 
 
 ### Java Version
 

@@ -45,50 +45,52 @@ public class DeferableObjectWrapper extends DefaultObjectWrapper {
 
     private TemplateModel handleCallable(Callable<?> callable) throws TemplateModelException {
         Environment env = Environment.getCurrentEnvironment();
-        try {
-            // Send the already finished content to the browser (streaming or chunked transfer-encoding).
-            // Note: doesn't do anything in an attempt block.
-            if (shouldAutoFlush(env)) {
+        // Send the already finished content to the browser (streaming or chunked transfer-encoding).
+        // Note: doesn't do anything in an attempt block.
+        if (shouldAutoFlush(env)) {
+            try {
                 env.getOut().flush();
+            } catch (IOException e) {
+                throw new TemplateModelException("Failed flushing stream", e);
             }
-            return wrap(callable.call()); // Blocking call
-        } catch (Exception e) {
-            // A special exception our enhanced TemplateExceptionHandlers can notice.
-            // See notes in EnhancedTemplateExceptionHandlers for why you need enhanced ones.
-            throw new DeferredInvocationTemplateException(e);
         }
+        Object result;
+        try {
+            result = callable.call(); // Blocking call
+        } catch (Exception e) {
+            throw new TemplateModelException("Exception invoking Callable", e);
+        }
+        return wrap(result);
     }
 
     private TemplateModel handleFuture(Future<?> future) throws TemplateModelException {
         Environment env = Environment.getCurrentEnvironment();
-        try {
-            // Send the already finished content to the browser (streaming or chunked transfer-encoding).
-            // Note: doesn't do anything in an attempt block.
-            if (shouldAutoFlush(env)) {
+        // Send the already finished content to the browser (streaming or chunked transfer-encoding).
+        // Note: doesn't do anything in an attempt block.
+        if (shouldAutoFlush(env)) {
+            try {
                 env.getOut().flush();
+            } catch (IOException e) {
+                throw new TemplateModelException("Failed flushing stream", e);
             }
+        }
+        try {
             return wrap(future.get()); // Blocking call
         } catch (ExecutionException e) {
-            throw new DeferredInvocationTemplateException(e.getCause());
+            throw new TemplateModelException("Failure during Future's computation", e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new DeferredInvocationTemplateException(e);
-        } catch (IOException e) {
-            throw new DeferredInvocationTemplateException(e);
+            throw new TemplateModelException("Interrupted waiting for Future", e);
         }
     }
 
     private boolean shouldAutoFlush(Environment env) throws TemplateModelException {
-        try {
-            // This is a hack for demo purposes to easily disable auto-flushing from the template.
-            TemplateModel override = env.getGlobalVariable("AUTO_FLUSH");
-            if (override instanceof TemplateBooleanModel) { // Implicit null check
-                return ((TemplateBooleanModel) override).getAsBoolean();
-            } else {
-                return autoFlush;
-            }
-        } catch (TemplateModelException e) {
-            throw new DeferredInvocationTemplateException(e);
+        // This is a hack for demo purposes to easily disable auto-flushing from the template.
+        TemplateModel override = env.getGlobalVariable("AUTO_FLUSH");
+        if (override instanceof TemplateBooleanModel) { // Implicit null check
+            return ((TemplateBooleanModel) override).getAsBoolean();
+        } else {
+            return autoFlush;
         }
     }
 

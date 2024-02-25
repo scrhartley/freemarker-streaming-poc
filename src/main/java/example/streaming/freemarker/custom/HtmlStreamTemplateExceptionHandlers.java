@@ -13,16 +13,15 @@ import java.io.Writer;
  * then the web framework can then show some error content using a completely different view.
  * With a deferred approach, we've potentially already sent some content and the web framework
  * isn't helping us anymore. Implement error handling ourselves with some HTML or JS tricks.
- * @see DeferredInvocationTemplateException
  */
-public class EnhancedTemplateExceptionHandlers {
+public class HtmlStreamTemplateExceptionHandlers {
 
     // For production use
     // Note: Error path should prevent caching to avoid being cached as the content of the requested page.
-    public static class MetaRefreshEnhancedRethrowHandler implements TemplateExceptionHandler {
+    public static class MetaRefreshRethrowHandler implements TemplateExceptionHandler {
         private final String errorPath;
 
-        public MetaRefreshEnhancedRethrowHandler(String errorPath) {
+        public MetaRefreshRethrowHandler(String errorPath) {
             this.errorPath = errorPath;
         }
 
@@ -33,7 +32,7 @@ public class EnhancedTemplateExceptionHandlers {
                 out = ((ExceptionAwareWriter) out).getExceptionWriter();
             }
 
-            if (te instanceof DeferredInvocationTemplateException && !env.isInAttemptBlock()) {
+            if (!env.isInAttemptBlock()) {
                 PrintWriter pw = (out instanceof PrintWriter) ? (PrintWriter) out : new PrintWriter(out);
                 pw.write(String.format(
                         "<meta http-equiv=\"refresh\" content=\"0; url=%s\">", errorPath));
@@ -56,7 +55,7 @@ public class EnhancedTemplateExceptionHandlers {
                 out = ((ExceptionAwareWriter) out).getExceptionWriter();
             }
 
-            if (te instanceof DeferredInvocationTemplateException && !env.isInAttemptBlock()) {
+            if (!env.isInAttemptBlock()) {
                 // Pass TemplateExceptionHandler a different writer so that we don't care if it closes it or not,
                 // and we can still write some JavaScript ourselves afterwards.
                 // Unfortunately, document.body.innerHTML='' before the TemplateExceptionHandler doesn't work.
