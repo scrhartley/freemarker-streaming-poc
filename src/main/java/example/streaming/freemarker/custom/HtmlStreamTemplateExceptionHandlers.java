@@ -14,11 +14,11 @@ import java.io.Writer;
  * With a deferred approach, we've potentially already sent some content and the web framework
  * isn't helping us anymore. Implement error handling ourselves with some HTML or JS tricks.
  */
-public class HtmlStreamTemplateExceptionHandlers {
+public interface HtmlStreamTemplateExceptionHandlers {
 
     // For production use
     // Note: Error path should prevent caching to avoid being cached as the content of the requested page.
-    public static class MetaRefreshRethrowHandler implements TemplateExceptionHandler {
+    class MetaRefreshRethrowHandler implements TemplateExceptionHandler {
         private final String errorPath;
 
         public MetaRefreshRethrowHandler(String errorPath) {
@@ -46,7 +46,7 @@ public class HtmlStreamTemplateExceptionHandlers {
 
 
     // For development use
-    public static final TemplateExceptionHandler JS_ENHANCED_HTML_DEBUG_HANDLER = new TemplateExceptionHandler() {
+    TemplateExceptionHandler JS_ENHANCED_HTML_DEBUG_HANDLER = new TemplateExceptionHandler() {
         private final TemplateExceptionHandler BASE_HANDLER = TemplateExceptionHandler.HTML_DEBUG_HANDLER;
         @Override
         public void handleTemplateException(
