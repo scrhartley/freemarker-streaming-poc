@@ -103,7 +103,7 @@ in the example service using Spring async. If JDK 8 and failedFuture is required
 ```
 public static <T> CompletableFuture<T> failedFuture(Throwable ex) {
     CompletableFuture<T> future = new CompletableFuture<>();
-    future.obtrudeException(ex);
+    future.completeExceptionally(ex);
     return future;
 }
 ```
