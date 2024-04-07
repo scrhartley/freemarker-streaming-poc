@@ -27,17 +27,16 @@ public class FlushBoundaryDirective implements TemplateDirectiveModel {
         if (loopVars.length != 0) {
             throw new TemplateModelException("This directive doesn't allow loop variables.");
         }
-
-        if (body != null) {
-            Writer out = env.getOut();
-            out.flush();
-
-            StringWriter tempWriter = new StringWriter();
-            body.render(new ExceptionAwareWriter(tempWriter, out));
-            out.write(tempWriter.toString());
-        } else {
+        if (body == null) {
             throw new TemplateModelException("missing body");
         }
+
+        Writer out = env.getOut();
+        out.flush();
+
+        StringWriter tempWriter = new StringWriter();
+        body.render(new ExceptionAwareWriter(tempWriter, out));
+        out.write(tempWriter.toString());
     }
 
 }
