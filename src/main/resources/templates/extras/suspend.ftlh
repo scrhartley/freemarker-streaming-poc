@@ -38,9 +38,9 @@
 
 <#-- Inspiration https://react.dev/reference/react/Suspense -->
 <#macro suspend fallback={}>
-    <#local counter = .globals.__suspendIdCounter__!0>
-    <#global __suspendIdCounter__ = counter + 1>
-    <#local id = "FMS_fallback:" + .globals.__suspendIdCounter__?c>
+    <#local counter = (.globals.__suspendIdCounter__!0) + 1>
+    <#global __suspendIdCounter__ = counter>
+    <#local id = "FMS_fb:" + counter?c>
 
     <#if fallback?is_macro>
         <template id="${id}"><@fallback /></template>
