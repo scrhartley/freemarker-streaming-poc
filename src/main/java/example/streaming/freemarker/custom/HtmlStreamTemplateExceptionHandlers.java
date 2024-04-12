@@ -70,8 +70,8 @@ public interface HtmlStreamTemplateExceptionHandlers {
                     // Clear page so there's only the error message.
                     pw.write(
                             "<script>(self => setTimeout(() =>\n" +
-                                    "document.body.innerHTML = self.previousElementSibling.outerHTML\n" +
-                                "))(document.currentScript);</script>");
+                                "document.body.innerHTML = self.previousElementSibling.outerHTML\n" +
+                            "))(document.currentScript);</script>");
                     //  Close the stream so that browser thinks it should render the debug HTML,
                     //  rather than just log the incomplete stream error in the console.
                     pw.close();
