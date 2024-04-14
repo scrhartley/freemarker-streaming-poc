@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import example.streaming.FreeMarkerConfig;
 import freemarker.core.Environment;
 import freemarker.core.Environment.Namespace;
 import freemarker.core.Macro;
@@ -154,9 +155,15 @@ public class DeferredHtmlDirective implements TemplateDirectiveModel {
     }
 
     private static String buildFallbackContent(String fallback, String id) {
-        return "<!--" + START_DATA + "-->" +
-                "<template id=\"" + id + "\"></template>" + fallback +
-                "<!--" + END_DATA + "-->";
+        if (FreeMarkerConfig.MODERN_BROWSER_ONLY) {
+            return "<!--" + START_DATA + "-->" +
+                   "<template id=\"" + id + "\"></template>" + fallback +
+                   "<!--" + END_DATA + "-->";
+        } else {
+            return "<!--" + START_DATA + "-->" +
+                   "<template id=\"" + id + "\" hidden></template>" + fallback +
+                   "<!--"+ END_DATA + "-->";
+        }
     }
 
     private static String getNextFallbackId(Environment env) {

@@ -9,6 +9,7 @@ import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import example.streaming.FreeMarkerConfig;
 import example.streaming.freemarker.custom.ExceptionAwareWriter;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
@@ -45,10 +46,17 @@ public class TriggerDeferredHtmlDirective implements TemplateDirectiveModel {
                 deferred.getValue().render(new ExceptionAwareWriter(writer, out));
 
                 StringBuilder builder = new StringBuilder();
-                builder.append("<template>").append(writer).append("</template>");
-                builder.append("<script>(() => {");
-                appendJavaScript(builder, deferred.getKey());
-                builder.append("})();</script>");
+                if (FreeMarkerConfig.MODERN_BROWSER_ONLY) {
+                    builder.append("<template>").append(writer).append("</template>");
+                    builder.append("<script>(() => {");
+                    appendJavaScript(builder, deferred.getKey());
+                    builder.append("})();</script>");
+                } else {
+                    builder.append("<template hidden>").append(writer).append("</template>");
+                    builder.append("<script>(function() {");
+                    appendJavaScript(builder, deferred.getKey());
+                    builder.append("})();</script>");
+                }
 
                 out.write(builder.toString());
             }
@@ -61,9 +69,15 @@ public class TriggerDeferredHtmlDirective implements TemplateDirectiveModel {
     // <!--FMD$--><template id="fbId"></template><div>1</div><div>2</div><!--/FMD$-->
     // (with the template always empty and the fallback's nodes following it)
     private static void appendJavaScript(StringBuilder builder, String fallbackId) {
-        builder.append("const self = document.currentScript;");
-        builder.append("const contentNode = self.previousSibling;"); // template
-        builder.append("contentNode.remove();"); // Detach from DOM tree, but keep a reference.
+        if (FreeMarkerConfig.MODERN_BROWSER_ONLY) {
+            builder.append("const self = document.currentScript;");
+            builder.append("const contentNode = self.previousSibling;"); // template
+            builder.append("contentNode.remove();"); // Detach from DOM tree, but keep a reference.
+        } else {
+            builder.append("const self = document.currentScript || document.scripts[document.scripts.length-1];");
+            builder.append("const contentNode = self.previousSibling;"); // template
+            builder.append("contentNode.parentNode.removeChild(contentNode);"); // Detach from DOM, keeping a reference.
+        }
 
         builder.append("const fb = document.getElementById('").append(fallbackId).append("');");
         builder.append("if (!fb) return;");
@@ -81,8 +95,18 @@ public class TriggerDeferredHtmlDirective implements TemplateDirectiveModel {
         builder.append("} while (node);");
         // @formatter:on
 
-        builder.append("fbParent.replaceChild(contentNode.content, node);"); // Replace end comment
-        builder.append("self.remove();");
+        if (FreeMarkerConfig.MODERN_BROWSER_ONLY) {
+            builder.append("fbParent.replaceChild(contentNode.content, node);"); // Replace end comment
+            builder.append("self.remove();");
+        } else {
+            builder.append("if (!contentNode.content) {");
+            builder.append(    "contentNode.content = document.createDocumentFragment();");
+            builder.append(    "Array.prototype.slice.call(contentNode.childNodes)");
+            builder.append(        ".forEach(function(node) { contentNode.content.appendChild(node) });");
+            builder.append("}");
+            builder.append("fbParent.replaceChild(contentNode.content, node);"); // Replace end comment
+            builder.append("self.parentNode.removeChild(self);");
+        }
     }
 
 }

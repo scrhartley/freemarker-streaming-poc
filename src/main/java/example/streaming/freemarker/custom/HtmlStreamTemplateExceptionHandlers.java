@@ -1,5 +1,6 @@
 package example.streaming.freemarker.custom;
 
+import example.streaming.FreeMarkerConfig;
 import freemarker.core.Environment;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
@@ -68,10 +69,17 @@ public interface HtmlStreamTemplateExceptionHandlers {
                     PrintWriter pw = (out instanceof PrintWriter) ? (PrintWriter) out : new PrintWriter(out);
                     pw.write(outCapture.toString());
                     // Clear page so there's only the error message.
-                    pw.write(
+                    if (FreeMarkerConfig.MODERN_BROWSER_ONLY) {
+                        pw.write(
                             "<script>(self => setTimeout(() =>\n" +
                                 "document.body.innerHTML = self.previousElementSibling.outerHTML\n" +
                             "))(document.currentScript);</script>");
+                    } else {
+                        pw.write(
+                            "<script>(function(self) { setTimeout(function() {\n" +
+                                "document.body.innerHTML = self.previousElementSibling.outerHTML\n" +
+                            "}) })(document.currentScript || document.scripts[document.scripts.length-1]);</script>");
+                    }
                     //  Close the stream so that browser thinks it should render the debug HTML,
                     //  rather than just log the incomplete stream error in the console.
                     pw.close();
