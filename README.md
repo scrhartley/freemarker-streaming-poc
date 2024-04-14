@@ -75,7 +75,7 @@ Inspiration: https://react.dev/reference/react/Component#catching-rendering-erro
 
 
 - `/suspend` ***Suspend directive***  
-Builds upon atom to show a loading indicator until its content is complete.
+Builds upon atom to show a loading indicator until its content is complete.  
 If JavaScript is not available, then the loading indicator/fallback will not be shown. 
 Perhaps this directive is less useful when using concurrency, since it can only show one
 loading indicator at a time and other pending data may complete at roughly the same time.
@@ -85,6 +85,16 @@ If you wish to use suspend and error boundary together then, unlike React,
 the error boundary should be inside the suspend and not the other way round.  
 Suspend is implemented as a macro in the template and uses the atom directive.  
 Inspiration: https://react.dev/reference/react/Suspense
+
+
+- `/deferred` ***Deferred and trigger deferred directives (EXPERIMENTAL)***  
+Deferred allows multiple loading indicators by queuing the evaluation of content until triggerDeferred is invoked.  
+This pair of directives requires JavaScript to work. The triggerDeferred directive processes
+the queued content in order and so slower deferred content can hold up quicker deferredContent.
+The context of each deferred is not retained and so while each fallback will work as expected,
+its queued body will have the context of where the triggerDeferred was invoked,
+as if the deferred body's content was defined at the location of the triggerDeferred.  
+Both deferred and triggerDeferred are implemented as custom Java directives.
 
 
 ## Notes

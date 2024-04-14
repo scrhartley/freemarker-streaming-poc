@@ -38,4 +38,16 @@ public class ExtrasController {
         return "extras/suspend";
     }
 
+    @GetMapping("/deferred")
+    public String deferred(Model model) {
+        for (int i = 1; i <= 5; i++) {
+            final int sleep = Math.max(4000 - (500 * i), 2500);
+            model.addAttribute("myData" + i, (Callable<String>) () -> {
+                Thread.sleep(sleep);
+                return "Work done";
+            });
+        }
+        return "extras/deferred";
+    }
+
 }

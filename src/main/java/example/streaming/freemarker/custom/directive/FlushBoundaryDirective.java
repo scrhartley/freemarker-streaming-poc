@@ -1,5 +1,6 @@
-package example.streaming.freemarker.custom;
+package example.streaming.freemarker.custom.directive;
 
+import example.streaming.freemarker.custom.ExceptionAwareWriter;
 import freemarker.core.Environment;
 import freemarker.template.*;
 
