@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import freemarker.core.Environment;
+import freemarker.core.Environment.Namespace;
 import freemarker.core.Macro;
 import freemarker.core.MarkupOutputFormat;
 import freemarker.core.TemplateDateFormat;
@@ -21,7 +22,8 @@ import freemarker.template.TemplateDateModel;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
-import freemarker.template.TemplateHashModelEx2;
+import freemarker.template.TemplateHashModelEx2.KeyValuePair;
+import freemarker.template.TemplateHashModelEx2.KeyValuePairIterator;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateNumberModel;
@@ -165,13 +167,13 @@ public class DeferredHtmlDirective implements TemplateDirectiveModel {
     }
 
     private static String findMacroNamespace(Macro macro, Environment env) throws TemplateModelException {
-        TemplateHashModelEx2.KeyValuePairIterator it = env.getCurrentNamespace().keyValuePairIterator();
+        KeyValuePairIterator it = env.getCurrentNamespace().keyValuePairIterator();
         String macroName = macro.getName();
         while (it.hasNext()) {
-            TemplateHashModelEx2.KeyValuePair pair = it.next();
+            KeyValuePair pair = it.next();
             TemplateModel value = pair.getValue();
-            if (value instanceof Environment.Namespace) {
-                Environment.Namespace namespace = (Environment.Namespace) value;
+            if (value instanceof Namespace) {
+                Namespace namespace = (Namespace) value;
                 if (namespace.get(macroName) == macro) {
                     return ((TemplateScalarModel)pair.getKey()).getAsString();
                 }
