@@ -177,6 +177,8 @@ public class DeferredHtmlDirective implements TemplateDirectiveModel {
                 if (namespace.get(macroName) == macro) {
                     return ((TemplateScalarModel)pair.getKey()).getAsString();
                 }
+            } else if (value == macro) {
+                break;
             }
         }
         return null;
