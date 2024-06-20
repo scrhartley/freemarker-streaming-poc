@@ -29,7 +29,11 @@ public class ExceptionAwareWriter extends Writer {
     }
 
     public Writer getExceptionWriter() {
-        return exceptionWriter;
+        Writer writer = this.exceptionWriter;
+        while (writer instanceof ExceptionAwareWriter) {
+            writer = ((ExceptionAwareWriter) writer).exceptionWriter;
+        }
+        return writer;
     }
 
 }
