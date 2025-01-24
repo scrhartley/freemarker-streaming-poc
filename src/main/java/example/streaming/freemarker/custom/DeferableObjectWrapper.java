@@ -5,6 +5,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import example.streaming.freemarker.custom.directive.Streaming;
 import freemarker.core.Environment;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.TemplateBooleanModel;
@@ -84,14 +85,8 @@ public class DeferableObjectWrapper extends DefaultObjectWrapper {
         }
     }
 
-    private boolean shouldAutoFlush(Environment env) throws TemplateModelException {
-        // This is a hack for demo purposes to easily disable auto-flushing from the template.
-        TemplateModel override = env.getGlobalVariable("AUTO_FLUSH");
-        if (override instanceof TemplateBooleanModel) { // Implicit null check
-            return ((TemplateBooleanModel) override).getAsBoolean();
-        } else {
-            return autoFlush;
-        }
+    private boolean shouldAutoFlush(Environment env) {
+        return autoFlush && Streaming.isAutoStreamingAllowed(env);
     }
 
 }
