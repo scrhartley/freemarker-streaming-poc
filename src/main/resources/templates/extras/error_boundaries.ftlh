@@ -50,7 +50,9 @@
 
 <#-- Inspiration: https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary -->
 <#macro errorBoundary fallback={}>
-    <#flush> <#-- Doesn't do anything inside an attempt block -->
+    <#if isAutoStreamingAllowed()>
+        <#flush> <#-- Note: doesn't do anything inside an attempt block -->
+    </#if>
     <#attempt>
         <#nested>
     <#recover>

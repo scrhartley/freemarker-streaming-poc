@@ -1,4 +1,4 @@
-<#global AUTO_FLUSH = false> <#-- Hack for demo -->
+<@disallowAutoStreaming />
 
 <!DOCTYPE html>
 <html>

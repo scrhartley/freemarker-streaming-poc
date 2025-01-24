@@ -33,7 +33,9 @@ public class FlushBoundaryDirective implements TemplateDirectiveModel {
         }
 
         Writer out = env.getOut();
-        out.flush();
+        if (Streaming.isAutoStreamingAllowed(env)) {
+            out.flush();
+        }
 
         StringWriter tempWriter = new StringWriter();
         body.render(new ExceptionAwareWriter(tempWriter, out));

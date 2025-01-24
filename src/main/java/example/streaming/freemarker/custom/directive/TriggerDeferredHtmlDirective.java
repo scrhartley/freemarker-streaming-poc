@@ -40,7 +40,9 @@ public class TriggerDeferredHtmlDirective implements TemplateDirectiveModel {
         LinkedHashMap<String, TemplateDirectiveBody> deferredMap = getAndClearPendingItems(env);
         while (deferredMap != null && !deferredMap.isEmpty()) {
             for (Map.Entry<String, TemplateDirectiveBody> deferred : deferredMap.entrySet()) {
-                out.flush(); // Rendering may block, so send buffered HTML to client first.
+                if (Streaming.isAutoStreamingAllowed(env)) {
+                    out.flush(); // Rendering may block, so send buffered HTML to client first.
+                }
 
                 StringWriter writer = new StringWriter();
                 deferred.getValue().render(new ExceptionAwareWriter(writer, out));
