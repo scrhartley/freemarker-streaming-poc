@@ -1,6 +1,6 @@
 package example.streaming.freemarker.custom;
 
-import example.streaming.FreeMarkerConfig;
+import example.streaming.config.FreeMarkerConfig;
 import freemarker.core.Environment;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;

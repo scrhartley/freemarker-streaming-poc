@@ -9,7 +9,7 @@ import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import example.streaming.FreeMarkerConfig;
+import example.streaming.config.FreeMarkerConfig;
 import example.streaming.freemarker.custom.ExceptionAwareWriter;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;

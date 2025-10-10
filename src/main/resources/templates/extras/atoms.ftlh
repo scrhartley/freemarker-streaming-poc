@@ -5,10 +5,10 @@
 	</head>
 	<body>
 
-        <#-- Compare the behaviour of this page to /callables/basic -->
+        <#-- Compare the behaviour of this page to /blocking-futures/basic -->
 
 	    <ul>
-            <li> <div>My page using atom macro with callables!</div> </li>
+            <li> <div>My page using atom macro!</div> </li>
             <#-- (It would work equally well with futures.) -->
 
             <@atom>

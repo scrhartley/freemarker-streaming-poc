@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import example.streaming.FreeMarkerConfig;
+import example.streaming.config.FreeMarkerConfig;
 import freemarker.core.Environment;
 import freemarker.core.Environment.Namespace;
 import freemarker.core.Macro;

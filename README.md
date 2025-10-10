@@ -45,11 +45,11 @@ but as the complexity of a template grows, this approach seems less convenient a
 
 These types of execution contrast with the standard MVC pattern of assembling all the data before running the template.
 
-- `/callables/basic`,  `/callables/dependencies` ***Interleaved execution***  
-These are example implementations using Callables.  
-When a value is accessed in the template, its Callable is invoked.  
-This approach interleaves running the template and fetching data.  
-As well as the basic endpoint, an additional endpoint shows how data dependencies can be managed in the Controller.
+- `/blocking-futures/basic`, `/blocking-futures/dependencies` ***Interleaved execution***  
+  These are example implementations using special Futures that don't run in separate threads.  
+  When a value is accessed in the template, its Future's wrapped Callable is invoked in a blocking manner.  
+  This approach interleaves running the template and fetching data.  
+  As well as the basic endpoint, an additional endpoint shows how data dependencies can be managed in the Controller.
 
 
 - `/futures/basic`, `/futures/dependencies` ***Concurrent execution***  
@@ -120,11 +120,17 @@ public static <T> CompletableFuture<T> failedFuture(Throwable ex) {
 
 ### Easter eggs
 
-1. Look at `FakeFuturesController` for how to get interleaved execution while avoiding both async services and
-using Callables directly. This implementation uses a special non-concurrent ExecutorService to avoid having to
-manage a normal ExecutorService.  
-2. Plumb in `ExtraConcurrentFreeMarkerConfig` which automatically converts Callables to Futures in order to get
-concurrency in templates without using async services (alternatively, use an ExecutorService in your Controllers).  
+- `AsyncModel` extends the Spring `Model` interface and streamlines adding a `Future` to a model,
+  which would otherwise require injecting an `ExecutorService` into every controller that wished to do so.
+
+
+- While the provided `LazyDirectExecutorService` already avoids threads (providing deferred execution but giving up
+  concurrency), it should also be possible to use something like Guava's [DirectExecutorService](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/MoreExecutors.html#newDirectExecutorService())
+  to somewhat simulate traditional MVC behaviour and perform all the execution in the controller.
+  This may be useful for comparison purposes:
+  - `DirectExecutorService` provides neither deferred execution nor concurrency.
+  - `LazyDirectExecutorService`, provides deferred execution but not concurrency.
+  - `Executors` offers instances of `ExecutorService` providing both deferred execution and concurrency.
 
 ### Warnings and Troubleshooting
 

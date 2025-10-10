@@ -1,4 +1,6 @@
-package example.streaming;
+package example.streaming.config;
+
+import java.util.concurrent.ExecutorService;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +10,7 @@ import example.streaming.freemarker.custom.directive.DeferredHtmlDirective;
 import example.streaming.freemarker.custom.directive.FlushBoundaryDirective;
 import example.streaming.freemarker.custom.directive.Streaming;
 import example.streaming.freemarker.custom.directive.TriggerDeferredHtmlDirective;
+import example.streaming.util.future.LazyDirectExecutorService;
 import freemarker.template.TemplateBooleanModel;
 
 @Configuration
@@ -27,6 +30,11 @@ public class FreeMarkerConfig {
         config.setSharedVariable("disallowAutoStreaming", Streaming.disallowAutoStreamingDirective());
         config.setSharedVariable("isAutoStreamingAllowed", Streaming.checkAutoStreamingAllowedModel());
         return config;
+    }
+
+    @Bean
+    ExecutorService mvcExecutorService() {
+        return new LazyDirectExecutorService();
     }
 
 }
