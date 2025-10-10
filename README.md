@@ -127,6 +127,10 @@ public static <T> CompletableFuture<T> failedFuture(Throwable ex) {
 
 ### Easter eggs
 
+- `AsyncModel` extends the Spring `Model` interface and streamlines adding a `Future` to a model,
+  which would otherwise require injecting an `ExecutorService` into every controller that wished to do so.
+
+
 - While the provided `LazyDirectExecutorService` already avoids threads (providing deferred execution but giving up
   concurrency), it should also be possible to use something like Guava's [DirectExecutorService](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/MoreExecutors.html#newDirectExecutorService())
   to somewhat simulate traditional MVC behaviour and perform all the execution in the controller.

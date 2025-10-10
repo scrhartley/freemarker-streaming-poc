@@ -11,7 +11,7 @@
 	<body>
 
 	    <ul>
-            <li> <div>My page using deferred macro with callables!</div> </li>
+            <li> <div>My page using deferred macro!</div> </li>
 
             <li>
                 <@deferred> <div>${myData1}</div> </@deferred>

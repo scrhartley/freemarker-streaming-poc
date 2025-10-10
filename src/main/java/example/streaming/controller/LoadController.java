@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.concurrent.Callable;
 
+import example.streaming.AsyncModel;
+
 @Controller
 @RequestMapping("/load")
 public class LoadController {
@@ -19,8 +21,8 @@ public class LoadController {
     }
 
     @GetMapping("/streaming")
-    public String streamingPageLoad(Model model) {
-        model.addAttribute("myData", (Callable<String>) () -> {
+    public String streamingPageLoad(AsyncModel model) {
+        model.addAttribute("myData", () -> {
             Thread.sleep(3_500); // Fetching data over network
             return "My data";
         });
@@ -28,7 +30,7 @@ public class LoadController {
     }
 
     @GetMapping("/head-first")
-    public String headBeforeRestOfPage(Model model) {
+    public String headBeforeRestOfPage(AsyncModel model) {
         streamingPageLoad(model);
         return "load/head_first";
     }

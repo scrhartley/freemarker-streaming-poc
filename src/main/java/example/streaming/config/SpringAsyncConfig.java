@@ -1,4 +1,4 @@
-package example.streaming;
+package example.streaming.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

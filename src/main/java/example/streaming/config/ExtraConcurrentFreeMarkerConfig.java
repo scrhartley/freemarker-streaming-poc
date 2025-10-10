@@ -1,4 +1,4 @@
-package example.streaming;
+package example.streaming.config;
 
 /**
  * This class exists to allow FreeMarker to automatically convert Callables in the Model to Futures.

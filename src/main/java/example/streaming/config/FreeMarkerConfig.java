@@ -1,4 +1,4 @@
-package example.streaming;
+package example.streaming.config;
 
 import java.util.concurrent.ExecutorService;
 
