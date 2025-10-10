@@ -45,13 +45,6 @@ but as the complexity of a template grows, this approach seems less convenient a
 
 These types of execution contrast with the standard MVC pattern of assembling all the data before running the template.
 
-- `/callables/basic`,  `/callables/dependencies` ***Interleaved execution***  
-These are example implementations using Callables.  
-When a value is accessed in the template, its Callable is invoked.  
-This approach interleaves running the template and fetching data.  
-As well as the basic endpoint, an additional endpoint shows how data dependencies can be managed in the Controller.
-
-
 - `/blocking-futures/basic`, `/blocking-futures/dependencies` ***Interleaved execution***  
   These are example implementations using special Futures that don't run in separate threads.  
   When a value is accessed in the template, its Future's wrapped Callable is invoked in a blocking manner.  
@@ -138,10 +131,6 @@ public static <T> CompletableFuture<T> failedFuture(Throwable ex) {
   - `DirectExecutorService` provides neither deferred execution nor concurrency.
   - `LazyDirectExecutorService`, provides deferred execution but not concurrency.
   - `Executors` offers instances of `ExecutorService` providing both deferred execution and concurrency.
-
-
-- Plumb in `ExtraConcurrentFreeMarkerConfig` which automatically converts Callables to Futures in order to get
-concurrency in templates without using async services (alternatively, use an ExecutorService in your Controllers).  
 
 ### Warnings and Troubleshooting
 
