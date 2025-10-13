@@ -50,7 +50,7 @@ public class AsyncModelConfig {
 
         @Override
         public boolean supportsParameter(MethodParameter parameter) {
-            return AsyncModel.class.isAssignableFrom(parameter.getParameterType());
+            return AsyncModel.class == parameter.getParameterType();
         }
 
         @Override
