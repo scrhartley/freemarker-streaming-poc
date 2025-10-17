@@ -3,6 +3,8 @@ package example.streaming.freemarker.custom;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import example.streaming.freemarker.custom.directive.Streaming;
 import freemarker.core.Environment;
@@ -13,14 +15,28 @@ import freemarker.template.Version;
 
 public class DeferableObjectWrapper extends DefaultObjectWrapper {
 
+    // Prevents waiting forever and should be longer than any actual request.
+    private static final int DEFAULT_TIMEOUT_SECONDS = 60 * 10;
+
     private final boolean autoFlush;
+    private final long timeoutSeconds;
 
     public DeferableObjectWrapper(Version incompatibleImprovements) {
-        this(incompatibleImprovements, true);
+        this(incompatibleImprovements, DEFAULT_TIMEOUT_SECONDS);
     }
     public DeferableObjectWrapper(Version incompatibleImprovements, boolean autoFlush) {
+        this(incompatibleImprovements, DEFAULT_TIMEOUT_SECONDS, autoFlush);
+    }
+    public DeferableObjectWrapper(Version incompatibleImprovements, int timeoutSeconds) {
+        this(incompatibleImprovements, timeoutSeconds, true);
+    }
+    public DeferableObjectWrapper(Version incompatibleImprovements, int timeoutSeconds, boolean autoFlush) {
         super(incompatibleImprovements);
         this.autoFlush = autoFlush;
+        this.timeoutSeconds = timeoutSeconds;
+        if (timeoutSeconds <= 0) {
+            throw new IllegalArgumentException("Timeout must be positive");
+        }
     }
 
     @Override
@@ -45,12 +61,14 @@ public class DeferableObjectWrapper extends DefaultObjectWrapper {
             }
         }
         try {
-            return wrap(future.get()); // Blocking call
+            return wrap(future.get(timeoutSeconds, TimeUnit.SECONDS)); // Blocking call
         } catch (ExecutionException e) {
             throw new TemplateModelException("Failure during Future's computation", e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new TemplateModelException("Interrupted waiting for Future", e);
+        } catch (TimeoutException e) {
+            throw new TemplateModelException("Timed out waiting for Future", e);
         }
     }
 
