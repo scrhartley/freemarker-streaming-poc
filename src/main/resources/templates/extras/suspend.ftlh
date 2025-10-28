@@ -6,7 +6,7 @@
 	<body>
 
 	    <ul>
-            <li> <div>My page using suspend macro with callables!</div> </li>
+            <li> <div>My page using suspend macro (JavaScript)!</div> </li>
 
             <li>
                 <@suspend> <div>${myData1}</div> </@suspend>

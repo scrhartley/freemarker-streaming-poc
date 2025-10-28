@@ -75,15 +75,16 @@ Inspiration: https://react.dev/reference/react/Component#catching-rendering-erro
 
 
 - `/suspend` ***Suspend directive***  
-Builds upon atom to show a loading indicator until its content is complete.  
-If JavaScript is not available, then the loading indicator/fallback will not be shown. 
-Perhaps this directive is less useful when using concurrency, since it can only show one
+Builds upon atom to show a loading indicator until its content is complete.
+Perhaps this tag is less useful when using concurrency, since it can only show one
 loading indicator at a time and other pending data may complete at roughly the same time.
 For this reason it is not called suspense and a proper out-of-order version
 seems like it would require changes to FreeMarker itself.  
+Two alternative implementations are included: one macro using JavaScript and one using [Declarative Shadow DOM](https://web.dev/articles/declarative-shadow-dom).
+If a required feature is not available (JavaScript being enabled and browser support for Declarative Shadow DOM, respectively),
+then the loading indicator/fallback will not be shown.  
 If you wish to use suspend and error boundary together then, unlike React,
-the error boundary should be inside the suspend and not the other way round.  
-Suspend is implemented as a macro in the template and uses the atom directive.  
+the error boundary should be inside the suspend and not the other way round.
 Inspiration: https://react.dev/reference/react/Suspense
 
 
