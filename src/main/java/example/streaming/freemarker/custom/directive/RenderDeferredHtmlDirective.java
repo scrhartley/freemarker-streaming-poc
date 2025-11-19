@@ -1,6 +1,6 @@
 package example.streaming.freemarker.custom.directive;
 
-import static example.streaming.freemarker.custom.directive.DeferredHtmlDirective.*;
+import static example.streaming.freemarker.custom.directive.DeferHtmlDirective.*;
 import static org.w3c.dom.Node.*;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
-public class TriggerDeferredHtmlDirective implements TemplateDirectiveModel {
+public class RenderDeferredHtmlDirective implements TemplateDirectiveModel {
 
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)

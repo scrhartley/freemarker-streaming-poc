@@ -26,7 +26,7 @@
         <li><a href="/atoms">/atoms</a></li>
         <li><a href="/error-boundaries">/error-boundaries</a></li>
         <li><a href="/suspend">/suspend</a></li>
-        <li><a href="/deferred">/deferred</a></li>
+        <li><a href="/defer">/defer</a></li>
     </ul>
 
     </body>
