@@ -6,46 +6,46 @@
 	        .box { width: 25%; border: 1px solid black; padding: 0.5em; }
 	        .box .box { width: 80%; border-color: grey; margin-top: 0.5em; }
 	        .box .box .box { border-color: blue; }
-	     </style>
+	    </style>
 	</head>
 	<body>
 
 	    <ul>
-            <li> <div>My page using deferred macro!</div> </li>
+            <li> <div>My page using defer macro!</div> </li>
 
             <li>
-                <@deferred> <div>${myData1}</div> </@deferred>
+                <@defer> <div>${myData1}</div> </@defer>
             </li>
             <li>
-                <@deferred fallback=myLoadingMacro> <div>${myData2}</div> </@deferred>
+                <@defer fallback=myLoadingMacro> <div>${myData2}</div> </@defer>
             </li>
             <li>
-                <@deferred fallback="Loading (with HTML string fallback) ...">
+                <@defer fallback="Loading (with HTML string fallback) ...">
                     <div class="box">
 
                         <div>${myData3}</div>
 
                         <div class="box">
-                            <@deferred fallback="Loading (nested) ...">
+                            <@defer fallback="Loading (nested) ...">
                                 <div>${myData4}</div>
-                            </@deferred>
+                            </@defer>
 
                             <div class="box">
-                                <@deferred fallback="Loading (nested 2) ...">
+                                <@defer fallback="Loading (nested 2) ...">
                                     ${myData5}
-                                </@deferred>
+                                </@defer>
                             </div>
                         </div>
 
                     </div>
-                </@deferred>
+                </@defer>
             </li>
         </ul>
 
         <div>Page finished!</div>
-        <@triggerDeferred />
+        <@renderDeferred />
 	</body>
 </html>
 
 <#macro myLoadingMacro>Loading (with macro fallback) ...</#macro>
-<#macro sharedDeferredFallback>Loading (with default fallback) ...</#macro>
+<#macro sharedDeferFallback>Loading (with default fallback) ...</#macro>

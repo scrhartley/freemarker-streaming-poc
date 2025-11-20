@@ -30,9 +30,9 @@ import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateNumberModel;
 import freemarker.template.TemplateScalarModel;
 
-public class DeferredHtmlDirective implements TemplateDirectiveModel {
+public class DeferHtmlDirective implements TemplateDirectiveModel {
 
-    private static final String SHARED_FALLBACK_MACRO = "sharedDeferredFallback";
+    private static final String SHARED_FALLBACK_MACRO = "sharedDeferFallback";
     private static final String FALLBACK_PARAM = "fallback";
     private static final String FALLBACK_ID_PREFIX = "FMD_fb:";
     private static final Pattern MACRO_NAME_ESCAPE_CHARS = Pattern.compile("[-.:#]");

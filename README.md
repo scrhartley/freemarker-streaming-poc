@@ -88,14 +88,14 @@ the error boundary should be inside the suspend and not the other way round.
 Inspiration: https://react.dev/reference/react/Suspense
 
 
-- `/deferred` ***Deferred and trigger deferred directives (EXPERIMENTAL)***  
-Deferred allows multiple loading indicators by queuing the evaluation of content until triggerDeferred is invoked.  
-This pair of directives requires JavaScript to work. The triggerDeferred directive processes
+- `/defer` ***Defer and render deferred directives (EXPERIMENTAL)***  
+Defer allows multiple loading indicators by queuing the evaluation of content until renderDeferred is invoked.  
+This pair of directives requires JavaScript to work. The renderDeferred directive processes
 the queued content in order and so slower deferred content can hold up quicker deferred content.
-The context of each deferred is not retained and so while each fallback will work as expected,
-its queued body will have the context of where the triggerDeferred was invoked,
-as if the deferred body's content was defined at the location of the triggerDeferred.  
-Both deferred and triggerDeferred are implemented as custom Java directives.
+The context of each defer is not retained and so while each fallback will work as expected,
+its queued body will have the context of where the renderDeferred was invoked,
+as if the defer's body content was defined at the location of the renderDeferred.  
+Both defer and renderDeferred are implemented as custom Java directives.
 
 
 ## Notes

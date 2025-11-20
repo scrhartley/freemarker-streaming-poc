@@ -20,10 +20,10 @@ import org.springframework.web.servlet.view.AbstractUrlBasedView;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
-import example.streaming.freemarker.custom.directive.DeferredHtmlDirective;
+import example.streaming.freemarker.custom.directive.DeferHtmlDirective;
 import example.streaming.freemarker.custom.directive.FlushBoundaryDirective;
+import example.streaming.freemarker.custom.directive.RenderDeferredHtmlDirective;
 import example.streaming.freemarker.custom.directive.Streaming;
-import example.streaming.freemarker.custom.directive.TriggerDeferredHtmlDirective;
 import example.streaming.util.future.LazyDirectExecutorService;
 import freemarker.template.TemplateBooleanModel;
 
@@ -40,8 +40,8 @@ public class FreeMarkerConfig {
         config.setSharedVariable("_$_MODERN_BROWSER___SUSPEND_MACRO_$_",
                 MODERN_BROWSER_ONLY ? TemplateBooleanModel.TRUE : TemplateBooleanModel.FALSE);
         config.setSharedVariable("atom", new FlushBoundaryDirective());
-        config.setSharedVariable("deferred", new DeferredHtmlDirective());
-        config.setSharedVariable("triggerDeferred", new TriggerDeferredHtmlDirective());
+        config.setSharedVariable("defer", new DeferHtmlDirective());
+        config.setSharedVariable("renderDeferred", new RenderDeferredHtmlDirective());
         config.setSharedVariable("disallowAutoStreaming", Streaming.disallowAutoStreamingDirective());
         config.setSharedVariable("isAutoStreamingAllowed", Streaming.checkAutoStreamingAllowedModel());
         return config;
