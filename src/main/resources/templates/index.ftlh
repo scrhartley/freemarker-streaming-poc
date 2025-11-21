@@ -27,6 +27,7 @@
         <li><a href="/error-boundaries">/error-boundaries</a></li>
         <li><a href="/suspend">/suspend</a></li>
         <li><a href="/defer">/defer</a></li>
+        <li><a href="/async-defer">/async-defer</a></li>
     </ul>
 
     </body>
