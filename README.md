@@ -91,12 +91,21 @@ Inspiration: https://react.dev/reference/react/Suspense
 - `/defer` ***Defer and render deferred directives (EXPERIMENTAL)***  
 Defer allows multiple loading indicators by queuing the evaluation of content until renderDeferred is invoked.  
 This pair of directives requires JavaScript to work. The renderDeferred directive processes
-the queued content in order and so slower deferred content can hold up quicker deferred content.
+the queued content in order and so slower deferred content can hold up quicker deferred content.  
 The context of each defer is not retained and so while each fallback will work as expected,
 its queued body will have the context of where the renderDeferred was invoked,
-as if the defer's body content was defined at the location of the renderDeferred.  
+as if the defer's body content was defined at the location of the renderDeferred.
 Both defer and renderDeferred are implemented as custom Java directives.
 
+
+- `async-defer` ***Async defer and render async deferred directives (EXPERIMENTAL)***  
+Async defer allows multiple loading indicators by queuing the evaluation of content until renderAsyncDeferred is invoked.  
+This pair of directives requires JavaScript to work. The renderAsyncDeferred directive processes
+the queued content and to allow this to be done out-of-order, each asyncDefer must declare the futures it depends on.  
+The context of each asyncDefer is not retained and so while each fallback will work as expected,
+its queued body will have the context of where the renderAsyncDeferred was invoked,
+as if the asyncDefer's body content was defined at the location of the renderAsyncDeferred.
+Both asyncDefer and renderAsyncDeferred are implemented as custom Java directives.
 
 ## Notes
 
