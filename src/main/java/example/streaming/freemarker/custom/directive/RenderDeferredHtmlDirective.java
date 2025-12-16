@@ -32,10 +32,10 @@ public class RenderDeferredHtmlDirective implements TemplateDirectiveModel {
         if (body != null) {
             throw new TemplateModelException("This directive doesn't allow a body");
         }
-        trigger(env);
+        execute(env);
     }
 
-    private static void trigger(Environment env) throws TemplateException, IOException {
+    protected void execute(Environment env) throws TemplateException, IOException {
         Writer out = env.getOut();
         LinkedHashMap<String, TemplateDirectiveBody> deferredMap = getAndClearPendingItems(env);
         while (deferredMap != null && !deferredMap.isEmpty()) {
@@ -43,34 +43,38 @@ public class RenderDeferredHtmlDirective implements TemplateDirectiveModel {
                 if (Streaming.isAutoStreamingAllowed(env)) {
                     out.flush(); // Rendering may block, so send buffered HTML to client first.
                 }
-
-                StringWriter writer = new StringWriter();
-                deferred.getValue().render(new ExceptionAwareWriter(writer, out));
-
-                StringBuilder builder = new StringBuilder();
-                if (FreeMarkerConfig.MODERN_BROWSER_ONLY) {
-                    builder.append("<template>").append(writer).append("</template>");
-                    builder.append("<script>(() => {");
-                    appendJavaScript(builder, deferred.getKey());
-                    builder.append("})();</script>");
-                } else {
-                    builder.append("<template hidden>").append(writer).append("</template>");
-                    builder.append("<script>(function() {");
-                    appendJavaScript(builder, deferred.getKey());
-                    builder.append("})();</script>");
-                }
-
-                out.write(builder.toString());
+                render(deferred, out);
             }
             deferredMap = getAndClearPendingItems(env); // May be new ones due to nesting
         }
+    }
+
+    protected void render(
+            Map.Entry<String, TemplateDirectiveBody> deferred, Writer out) throws TemplateException, IOException {
+        StringWriter writer = new StringWriter();
+        deferred.getValue().render(new ExceptionAwareWriter(writer, out));
+
+        StringBuilder builder = new StringBuilder();
+        if (FreeMarkerConfig.MODERN_BROWSER_ONLY) {
+            builder.append("<template>").append(writer).append("</template>");
+            builder.append("<script>(() => {");
+            appendJavaScript(builder, deferred.getKey());
+            builder.append("})();</script>");
+        } else {
+            builder.append("<template hidden>").append(writer).append("</template>");
+            builder.append("<script>(function() {");
+            appendJavaScript(builder, deferred.getKey());
+            builder.append("})();</script>");
+        }
+
+        out.write(builder.toString());
     }
 
     // Replace the fallback with the real content.
     // Expect fallback to look something like:
     // <!--FMD$--><template id="fbId"></template><div>1</div><div>2</div><!--/FMD$-->
     // (with the template always empty and the fallback's nodes following it)
-    private static void appendJavaScript(StringBuilder builder, String fallbackId) {
+    private void appendJavaScript(StringBuilder builder, String fallbackId) {
         if (FreeMarkerConfig.MODERN_BROWSER_ONLY) {
             builder.append("const self = document.currentScript;");
             builder.append("const contentNode = self.previousSibling;"); // template
@@ -88,7 +92,7 @@ public class RenderDeferredHtmlDirective implements TemplateDirectiveModel {
         builder.append("let node = fb.previousSibling;"); // Start from opening comment
         builder.append("do {");
         builder.append(    "if (node.nodeType === ").append(COMMENT_NODE);
-        builder.append(            " && node.data === '").append(END_DATA).append("') {");
+        builder.append(            " && node.data === '").append(getEndDataMarker()).append("') {");
         builder.append(        "break;");
         builder.append(    "}");
         builder.append(    "const nextNode = node.nextSibling;");
@@ -109,6 +113,10 @@ public class RenderDeferredHtmlDirective implements TemplateDirectiveModel {
             builder.append("fbParent.replaceChild(contentNode.content, node);"); // Replace end comment
             builder.append("self.parentNode.removeChild(self);");
         }
+    }
+
+    protected String getEndDataMarker() {
+        return DeferHtmlDirective.END_DATA;
     }
 
 }
