@@ -199,23 +199,28 @@ public class AsyncModelConfig {
 
         @Override
         public Model addAttribute(String name, @Nullable Object value) {
-            return source.addAttribute(name, value);
+            source.addAttribute(name, value);
+            return this;
         }
         @Override
         public Model addAttribute(Object value) {
-            return source.addAttribute(value);
+            source.addAttribute(value);
+            return this;
         }
         @Override
         public Model addAllAttributes(@Nullable Collection<?> values) {
-            return source.addAllAttributes(values);
+            source.addAllAttributes(values);
+            return this;
         }
         @Override
         public Model addAllAttributes(@Nullable Map<String, ?> attributes) {
-            return source.addAllAttributes(attributes);
+            source.addAllAttributes(attributes);
+            return this;
         }
         @Override
         public Model mergeAttributes(@Nullable Map<String, ?> attributes) {
-            return source.mergeAttributes(attributes);
+            source.mergeAttributes(attributes);
+            return this;
         }
         @Override
         public boolean containsAttribute(String name) {
