@@ -76,8 +76,8 @@ public class AsyncDeferHtmlDirective implements TemplateDirectiveModel {
             processMacro(SHARED_FALLBACK_MACRO, null, dependencies, env, body);
         }
         else {
-            @SuppressWarnings({"rawtypes", "unchecked"})
-            Map.Entry entry = ((Set<Map.Entry>)params.entrySet()).iterator().next();
+            @SuppressWarnings("unchecked")
+            Map.Entry<?,?> entry = ((Set<Map.Entry<?,?>>)params.entrySet()).iterator().next();
             if (!FALLBACK_PARAM.equals(entry.getKey())) {
                 throw new TemplateModelException("Expected param " + FALLBACK_PARAM + ", found: " + entry.getKey());
             }
@@ -98,11 +98,10 @@ public class AsyncDeferHtmlDirective implements TemplateDirectiveModel {
             processString(content, dependencies, env, body);
         }
         else if (fallback instanceof TemplateMarkupOutputModel<?>) {
-            @SuppressWarnings("rawtypes")
-            TemplateMarkupOutputModel model = (TemplateMarkupOutputModel) fallback;
-            @SuppressWarnings("rawtypes")
-            MarkupOutputFormat outputFormat = model.getOutputFormat();
+            TemplateMarkupOutputModel<?> model = (TemplateMarkupOutputModel<?>) fallback;
             @SuppressWarnings("unchecked")
+            MarkupOutputFormat<TemplateMarkupOutputModel<?>> outputFormat =
+                    (MarkupOutputFormat<TemplateMarkupOutputModel<?>>) model.getOutputFormat();
             String content = outputFormat.getMarkupString(model);
             processString(content, dependencies, env, body);
         }
