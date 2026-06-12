@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import freemarker.core.Environment;
@@ -59,8 +58,7 @@ public class DeferHtmlDirective implements TemplateDirectiveModel {
             processMacro(SHARED_FALLBACK_MACRO, null, env, body);
         }
         else {
-            @SuppressWarnings("unchecked")
-            Map.Entry<?,?> entry = ((Set<Map.Entry<?,?>>)params.entrySet()).iterator().next();
+            Map.Entry<?,?> entry = ((Map<?,?>) params).entrySet().iterator().next();
             if (!FALLBACK_PARAM.equals(entry.getKey())) {
                 throw new TemplateModelException("Expected param " + FALLBACK_PARAM + ", found: " + entry.getKey());
             }
