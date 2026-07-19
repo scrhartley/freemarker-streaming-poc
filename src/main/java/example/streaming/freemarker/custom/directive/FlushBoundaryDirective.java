@@ -24,11 +24,9 @@ public class FlushBoundaryDirective implements TemplateDirectiveModel {
             throws TemplateException, IOException {
         if (!params.isEmpty()) {
             throw new TemplateModelException("This directive doesn't allow parameters.");
-        }
-        if (loopVars.length != 0) {
+        } else if (loopVars.length != 0) {
             throw new TemplateModelException("This directive doesn't allow loop variables.");
-        }
-        if (body == null) {
+        } else if (body == null) {
             throw new TemplateModelException("missing body");
         }
 

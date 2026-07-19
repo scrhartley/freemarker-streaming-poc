@@ -47,11 +47,9 @@ public class DeferHtmlDirective implements TemplateDirectiveModel {
             throws TemplateException, IOException {
         if (body == null) {
             throw new TemplateModelException("missing body");
-        }
-        if (loopVars.length != 0) {
+        } else if (loopVars.length != 0) {
             throw new TemplateModelException("This directive doesn't allow loop variables.");
-        }
-        if (params.size() > 1) {
+        } else if (params.size() > 1) {
             throw new TemplateModelException("This directive doesn't allow multiple parameters.");
         }
 
