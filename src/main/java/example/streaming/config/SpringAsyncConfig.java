@@ -19,7 +19,7 @@ public class SpringAsyncConfig {
     }
 
 
-    private ExecutorService concurrentExecutorService() {
+    private static ExecutorService concurrentExecutorService() {
         // Please don't use this in production since the thread pool size in unbounded.
         return Executors.newCachedThreadPool();
 

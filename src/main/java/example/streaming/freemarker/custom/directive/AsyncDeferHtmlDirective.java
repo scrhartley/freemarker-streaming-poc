@@ -57,15 +57,13 @@ public class AsyncDeferHtmlDirective implements TemplateDirectiveModel {
             throws TemplateException, IOException {
         if (body == null) {
             throw new TemplateModelException("missing body");
-        }
-        if (loopVars.length != 0) {
+        } else if (loopVars.length != 0) {
             throw new TemplateModelException("This directive doesn't allow loop variables.");
         }
 
         if (!params.containsKey(DEPENDENCIES_PARAM)) {
             throw new TemplateModelException("Expected parameter " + DEPENDENCIES_PARAM + " not found");
-        }
-        if (params.size() > 2) {
+        } else if (params.size() > 2) {
             throw new TemplateModelException("Found " + params.size() + " parameters and expected <= 2");
         }
 
@@ -358,4 +356,5 @@ public class AsyncDeferHtmlDirective implements TemplateDirectiveModel {
 
         };
     }
+
 }

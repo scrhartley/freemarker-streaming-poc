@@ -24,12 +24,10 @@ public class RenderDeferredHtmlDirective implements TemplateDirectiveModel {
             throws TemplateException, IOException {
         if (!params.isEmpty()) {
             throw new TemplateModelException("This directive doesn't allow parameters.");
-        }
-        if (loopVars.length != 0) {
+        } else if (loopVars.length != 0) {
             throw new TemplateModelException("This directive doesn't allow loop variables.");
-        }
-        if (body != null) {
-            throw new TemplateModelException("This directive doesn't allow a body");
+        } else if (body != null) {
+            throw new TemplateModelException("This directive doesn't allow a body.");
         }
         execute(env);
     }
