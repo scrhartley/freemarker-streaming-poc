@@ -290,6 +290,7 @@ public class AsyncDeferHtmlDirective implements TemplateDirectiveModel {
             return Collections.emptyIterator();
         }
 
+        // Pending items are removed from the Set as the iterator progresses.
         return new Iterator<>() {
 
             final Iterator<Collection<String>> queue = getFuturesState(env).getCompletionIterable().iterator();
