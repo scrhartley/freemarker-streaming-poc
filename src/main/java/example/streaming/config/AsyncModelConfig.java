@@ -111,7 +111,7 @@ public class AsyncModelConfig {
     }
 
 
-    private static class ExecutorAsyncModel extends WrappingModel implements AsyncModel {
+    private static class ExecutorAsyncModel extends WrappingModel<AsyncModel> implements AsyncModel {
         private final ExecutorService executorService;
         private final CompletionService<Object> completionService;
         private final BlockingQueue<Future<Object>> completionQueue;
@@ -141,13 +141,13 @@ public class AsyncModelConfig {
         }
 
         @Override
-        public Model addAttribute(String name, @Nullable Object value) {
+        public AsyncModel addAttribute(String name, @Nullable Object value) {
             validateAttribute(name, value);
             return super.addAttribute(name, value);
         }
 
         @Override
-        public Model addAllAttributes(@Nullable Map<String, ?> attributes) {
+        public AsyncModel addAllAttributes(@Nullable Map<String, ?> attributes) {
             if (attributes != null) {
                 for (Map.Entry<String, ?> entry : attributes.entrySet()) {
                     validateAttribute(entry.getKey(), entry.getValue());
@@ -189,38 +189,43 @@ public class AsyncModelConfig {
             return Collections.unmodifiableMap(super.asMap());
         }
 
+        @Override
+        protected AsyncModel getThis() {
+            return this;
+        }
+
     }
 
-    private static class WrappingModel implements Model {
+    private static abstract class WrappingModel<W extends Model> implements Model {
         private final Model source;
         WrappingModel(Model model) {
             this.source = model;
         }
 
         @Override
-        public Model addAttribute(String name, @Nullable Object value) {
+        public W addAttribute(String name, @Nullable Object value) {
             source.addAttribute(name, value);
-            return this;
+            return getThis();
         }
         @Override
-        public Model addAttribute(Object value) {
+        public W addAttribute(Object value) {
             source.addAttribute(value);
-            return this;
+            return getThis();
         }
         @Override
-        public Model addAllAttributes(@Nullable Collection<?> values) {
+        public W addAllAttributes(@Nullable Collection<?> values) {
             source.addAllAttributes(values);
-            return this;
+            return getThis();
         }
         @Override
-        public Model addAllAttributes(@Nullable Map<String, ?> attributes) {
+        public W addAllAttributes(@Nullable Map<String, ?> attributes) {
             source.addAllAttributes(attributes);
-            return this;
+            return getThis();
         }
         @Override
-        public Model mergeAttributes(@Nullable Map<String, ?> attributes) {
+        public W mergeAttributes(@Nullable Map<String, ?> attributes) {
             source.mergeAttributes(attributes);
-            return this;
+            return getThis();
         }
         @Override
         public boolean containsAttribute(String name) {
@@ -234,6 +239,8 @@ public class AsyncModelConfig {
         public Map<String, Object> asMap() {
             return source.asMap();
         }
+
+        protected abstract W getThis();
     }
 
 }
